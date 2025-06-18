@@ -1,0 +1,188 @@
+/* Custom styles to complement Bootstrap */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --success-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --warning-color: #f39c12;
+    --info-color: #1abc9c;
+    --info2-color: #1abc9c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --sidebar-width: 230px;
+    --top-nav-height: 60px;
+}
+
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar customization */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 300;
+}
+
+/* Card customization */
+.card {
+    border: none;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    font-weight: 200;
+}
+
+/* Status badges */
+.badge {
+    font-weight: 200;
+    padding: 0.5em 0.75em;
+}
+
+/* Table customization */
+.table th {
+    font-weight: 200;
+    background-color: #f8f9fa;
+}
+
+/* Custom buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Form customization */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 268px) {
+    .card-body {
+        padding: 1rem;
+    }
+}
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #f3f4f5;
+    border-right: 1px solid #dee2e6;
+    z-index: 1020;
+    overflow-y: auto;
+    transition: all 0.3s;
+}
+
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar-menu a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-menu a.active {
+    background-color: rgba(41, 128, 185, 0.1);
+    color: #2c3e50;
+    font-weight: 200;
+    border-left: 3px solid #2c3e50;
+}
+
+.sidebar-menu i {
+    width: 24px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.has-dropdown {
+    position: relative;
+}
+
+.has-dropdown > a::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 300;
+    position: absolute;
+    right: 20px;
+    transition: transform 0.3s;
+}
+
+.has-dropdown.open > a::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.dropdown-content a {
+    padding-left: 45px;
+    font-size: 14px;
+}
+
+.dropdown-content a.active {
+    background-color: rgba(41, 128, 185, 0.1);
+    color: #2c3e50;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.sidebar-footer a {
+    display: block;
+    padding: 8px 20px;
+    color: #333;
+    text-decoration: none;
+}
+
+.sidebar-footer a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 20px;
+    min-height: calc(100vh - 60px);
+    background-color: #f5f7fa;
+}
