@@ -86,7 +86,7 @@ $isMobile = isMobile();
     <!-- ApexCharts CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.35.0/dist/apexcharts.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
     <style>
         .stat-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;

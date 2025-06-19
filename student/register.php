@@ -28,7 +28,7 @@ while ($row = $agentQuery->fetch_assoc()) {
 <head>
     <title>Add Member</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css1/components/member-form.css">
+    
     <style>
         .error-message {
             color: #dc3545;
