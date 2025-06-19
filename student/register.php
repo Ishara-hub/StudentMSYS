@@ -5,14 +5,22 @@ require_once '../includes/auth.php';
 
 // Get active batches
 $batches = [];
-$batchQuery = $conn->query("SELECT b.batch_id, b.batch_name, c.course_name, c.total_fee 
+$batchQuery = $conn->query("SELECT b.batch_id, b.batch_name, c.course_name, c.total_fee
                           FROM batches b 
-                          JOIN courses c ON b.course_id = c.course_id 
+                          JOIN courses c ON b.course_id = c.course_id
                           WHERE b.is_active = TRUE");
 while ($row = $batchQuery->fetch_assoc()) {
     $batches[] = $row;
 }
+
+// Get active agents
+$agents = [];
+$agentQuery = $conn->query("SELECT agent_id, agent_name, contact_number FROM agents WHERE status = 'active' ORDER BY agent_name");
+while ($row = $agentQuery->fetch_assoc()) {
+    $agents[] = $row;
+}
 ?>
+
 <?php include '../includes/header.php'; ?>
 
 <!DOCTYPE html>
@@ -36,6 +44,11 @@ while ($row = $batchQuery->fetch_assoc()) {
             padding: 15px;
             border-radius: 5px;
             margin-top: 15px;
+        }
+        .agent-info {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: -5px;
         }
     </style>
     <script>
@@ -172,6 +185,20 @@ while ($row = $batchQuery->fetch_assoc()) {
             const spouseSection = document.getElementById("spouseSection");
             spouseSection.style.display = (civilStatus === 'Married') ? 'block' : 'none';
         }
+
+        // Show agent contact info when selected
+        function showAgentInfo(selectElement) {
+            const agentInfoDiv = document.getElementById('agentInfo');
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const contactNumber = selectedOption.getAttribute('data-contact');
+            
+            if (contactNumber) {
+                agentInfoDiv.textContent = `Contact: ${contactNumber}`;
+                agentInfoDiv.style.display = 'block';
+            } else {
+                agentInfoDiv.style.display = 'none';
+            }
+        }
     </script>
 </head>
 <body>
@@ -261,6 +288,18 @@ while ($row = $batchQuery->fetch_assoc()) {
                             <input type="text" name="father_name" class="form-control">
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Agent</label>
+                            <select name="agent_id" class="form-select" onchange="showAgentInfo(this)">
+                                <option value="">-- No Agent --</option>
+                                <?php foreach ($agents as $agent): ?>
+                                    <option value="<?= $agent['agent_id'] ?>" data-contact="<?= htmlspecialchars($agent['contact_number']) ?>">
+                                        <?= htmlspecialchars($agent['agent_name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div id="agentInfo" class="agent-info" style="display:none;"></div>
+                        </div>
+                        <div class="mb-3">
                             <label for="batch_id" class="form-label">Select Batch <span class="text-danger">*</span></label>
                             <select class="form-select" id="batch_id" name="batch_id" required>
                                 <option value="">-- Select Batch --</option>
@@ -314,7 +353,6 @@ while ($row = $batchQuery->fetch_assoc()) {
             toggleSpouseSection();
         });
     </script>
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>
-
-<?php include '../includes/footer.php'; ?>

@@ -212,12 +212,11 @@ function numberToWords($num) {
 <body>
     <div class="receipt">
         <div class="header">
-            <div class="company-name"><?= defined('SITE_NAME') ? SITE_NAME : 'Your Institution' ?></div>
-            <div class="receipt-title">PAYMENT RECEIPT</div>
-            <div class="receipt-info">
-                <div><?= defined('SITE_ADDRESS') ? SITE_ADDRESS : 'Institution Address' ?></div>
-                <div>Tel: <?= defined('SITE_PHONE') ? SITE_PHONE : 'Phone Number' ?></div>
+            <div style="text-align: center;">
+                <img src="../assets/images/logo.jpg" alt="Company Logo" style="max-width: 350px; max-height: 250px; ">
             </div>
+            <div class="voucher-title">INVOICE</div>
+            <div class="company-name">CSTI Bureau (Pvt) Ltd </div>
         </div>
 
         <div class="divider"></div>

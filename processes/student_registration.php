@@ -42,6 +42,7 @@ $motherName = sanitizeInput($_POST['mother_name'] ?? '');
 $fatherName = sanitizeInput($_POST['father_name'] ?? '');
 $spouseNic = sanitizeInput($_POST['spouse_nic'] ?? '');
 $spouseName = sanitizeInput($_POST['spouse_name'] ?? '');
+$agentId = isset($_POST['agent_id']) && !empty($_POST['agent_id']) ? (int)$_POST['agent_id'] : null;
 
 // Validate required fields
 if (empty($title)) $errors[] = "Title is required";
@@ -72,6 +73,19 @@ if ($civilStatus === 'Married') {
     if (empty($spouseName)) $errors[] = "Spouse name is required for married status";
 }
 
+// If agent is selected, verify it exists
+if ($agentId !== null) {
+    $agentCheck = $conn->prepare("SELECT agent_id FROM agents WHERE agent_id = ? AND status = 'active'");
+    $agentCheck->bind_param("i", $agentId);
+    $agentCheck->execute();
+    $agentCheck->store_result();
+    
+    if ($agentCheck->num_rows === 0) {
+        $errors[] = "Selected agent is not valid";
+    }
+    $agentCheck->close();
+}
+
 // If there are errors, redirect back with error messages
 if (!empty($errors)) {
     $_SESSION['error'] = implode("<br>", $errors);
@@ -98,7 +112,7 @@ $balance = $courseFee - $initialPayment;
 $conn->begin_transaction();
 
 try {
-    // Insert student record
+    // Insert student record (now includes agent_id)
     $stmt = $conn->prepare("INSERT INTO students (
         title, 
         full_name, 
@@ -111,12 +125,13 @@ try {
         civil_status, 
         mother_name, 
         father_name,
+        agent_id,
         status,
         registration_date
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Registered', NOW())");
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Registered', NOW())");
     
     $stmt->bind_param(
-        "sssssssssss", 
+        "sssssssssssi", 
         $title, 
         $fullName, 
         $initials, 
@@ -127,7 +142,8 @@ try {
         $address, 
         $civilStatus, 
         $motherName, 
-        $fatherName
+        $fatherName,
+        $agentId
     );
     
     if (!$stmt->execute()) {
@@ -195,6 +211,7 @@ try {
         throw new Exception("Failed to add initial progress record");
     }
 
+
     // Commit transaction
     $conn->commit();
 
@@ -209,4 +226,3 @@ try {
     header("Location: ../student/register.php");
     exit();
 }
-?>
