@@ -11,13 +11,13 @@ $isDarkMode = isset($_COOKIE['darkMode']) && $_COOKIE['darkMode'] === 'true';
     <title><?= SITE_NAME ?> | <?= ucfirst(str_replace('.php', '', $currentPage)) ?></title>
 
     <!-- Bootstrap CSS -->
-    <link href="<?= BASE_URL ?>/vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="./assets/css/custom.css">
+   <link rel="stylesheet" href="/StudentMSYS/assets/css/custom.css">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Optional: Add custom styles directly in head -->
     <style>
@@ -300,13 +300,19 @@ $isDarkMode = isset($_COOKIE['darkMode']) && $_COOKIE['darkMode'] === 'true';
                         </li>
                         <!-- accounts Dropdown -->
                          <li class="nav-item">
-                            <a class="nav-link <?= in_array($currentPage, ['chart_of_accounts_data.php', 'chart_of_accounts.php', 'balance_sheet_pdf.php', 'balance_sheet.php', 'general_ledger.php', 'income_statement.php', 'journal_entry.php', 'trial_balance.php', 'account_payment.php']) ? 'active' : '' ?>"
+                            <a class="nav-link <?= in_array($currentPage, ['chart_of_accounts_data.php', 'chart_of_accounts.php', 'balance_sheet_pdf.php', 'balance_sheet.php', 'general_ledger.php', 'income_statement.php', 'journal_entry.php', 'trial_balance.php', 'account_payment.php', 'add_branch.php']) ? 'active' : '' ?>"
                                data-bs-toggle="collapse" href="#accountsCollapse" role="button">
                                 <i class="fas fa-book me-1"></i> Accounts
                                 <i class="fas fa-angle-down float-end mt-1"></i>
                             </a>
-                            <div class="collapse <?= in_array($currentPage, ['chart_of_accounts_data.php', 'chart_of_accounts.php', 'balance_sheet_pdf.php', 'balance_sheet.php', 'general_ledger.php', 'income_statement.php', 'journal_entry.php', 'trial_balance.php', 'account_payment.php']) ? 'show' : '' ?>" id="accountsCollapse">
+                            <div class="collapse <?= in_array($currentPage, ['chart_of_accounts_data.php', 'chart_of_accounts.php', 'balance_sheet_pdf.php', 'balance_sheet.php', 'general_ledger.php', 'income_statement.php', 'journal_entry.php', 'trial_balance.php', 'account_payment.php', 'add_branch.php']) ? 'show' : '' ?>" id="accountsCollapse">
                                 <ul class="nav flex-column ms-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link <?= $currentPage === 'add_branch.php' ? 'active' : '' ?>"
+                                           href="<?= BASE_URL ?>/accounts/add_branch.php">
+                                            <i class="fas fa-plus-circle me-1"></i> Add Branch
+                                        </a>
+                                    </li>
                                     <li class="nav-item">
                                         <a class="nav-link <?= $currentPage === 'chart_of_accounts.php' ? 'active' : '' ?>"
                                            href="<?= BASE_URL ?>/accounts/chart_of_accounts.php">

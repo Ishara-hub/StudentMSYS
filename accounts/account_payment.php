@@ -1,10 +1,11 @@
 <?php
-session_start();
+
 require_once '../includes/auth.php';
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 require_once '../includes/header.php';
 
+ob_start();
 // Generate transaction ID securely
 function generate_transaction_id() {
     $prefix = "DT-FV-" . date('Y-m-');
@@ -119,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $conn->commit();
         $_SESSION['success'] = "Payment recorded successfully! Transaction ID: $transaction_id";
-        header("Location: print_vaucher.php?id=$journal_id");
+        echo "<script>window.location.href='../accounts/print_vaucher.php?id=$journal_id';</script>";
         exit();
     } catch (Exception $e) {
         $conn->rollback();

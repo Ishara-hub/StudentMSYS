@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once '../includes/auth.php';
 require_once '../config/database.php';
 require_once '../includes/functions.php';
@@ -69,7 +69,7 @@ foreach ($accounts as $account) {
 }
 
 // Include header
-include 'header.php';
+
 ?>
 
 <style>

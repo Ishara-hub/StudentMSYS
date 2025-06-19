@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../includes/auth.php';
+require_once '../config/database.php';
 
 // Check if payment ID is provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -13,10 +13,8 @@ $payment_id = intval($_GET['id']);
 
 // Get payment header information
 $stmt = $conn->prepare("
-    SELECT gj.*, u.username as created_by_name 
-    FROM general_journal gj
-    LEFT JOIN users u ON gj.created_by = u.id
-    WHERE gj.id = ?
+    SELECT * FROM general_journal
+    WHERE id = ?
 ");
 $stmt->bind_param("i", $payment_id);
 $stmt->execute();
@@ -252,15 +250,10 @@ function numberToWords($num) {
     <div class="receipt">
         <div class="header">
             <div style="text-align: center;">
-                <img src="assets/images/mf.png" alt="Company Logo" style="max-width: 150px; max-height: 250px; ">
+                <img src="../assets/images/logo.jpg" alt="Company Logo" style="max-width: 350px; max-height: 250px; ">
             </div>
             <div class="voucher-title">PAYMENT VOUCHER</div>
-            <div class="company-name">OSHADI INVESTMENT (Pvt) Ltd </div>
-
-            <div class="receipt-info">
-                <div> PIGALA ROAD, PELAWATTA</div>
-                <div>Tel: 0768 605 734 | Reg No: MF12345</div>
-            </div>
+            <div class="company-name">CSTI Bureau (Pvt) Ltd </div>
         </div>
 
         <div class="divider"></div>

@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 // Include database connection
-require_once '../includes/auth.php';
+require_once '../config/database.php';
 
 // Set proper content type
 header('Content-Type: text/html; charset=utf-8');
