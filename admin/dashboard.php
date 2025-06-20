@@ -115,9 +115,10 @@ $isMobile = isMobile();
             }
         }
     </style>
+    <?php include '../includes/header.php'; ?>
 </head>
 <body class="bg-light">
-    <?php include '../includes/header.php'; ?>
+    
     
     <div class="container-fluid">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

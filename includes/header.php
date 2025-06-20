@@ -5,7 +5,7 @@ $isDarkMode = isset($_COOKIE['darkMode']) ? $_COOKIE['darkMode'] === 'true' : fa
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="<?= $isDarkMode ? 'dark' : 'light' ?>">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf8mb4">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= SITE_NAME ?> | <?= ucfirst(str_replace('.php', '', $currentPage)) ?></title>
     
@@ -176,12 +176,12 @@ $isDarkMode = isset($_COOKIE['darkMode']) ? $_COOKIE['darkMode'] === 'true' : fa
 
                 <!-- Courses Section -->
                 <li class="nav-item">
-                    <a class="nav-link <?= in_array($currentPage, ['add_course.php', 'manage_courses.php', 'add_batch.php', 'manage_batches.php']) ? 'active' : '' ?>"
+                    <a class="nav-link <?= in_array($currentPage, ['add_course.php', 'manage_courses.php', 'add_batch.php', 'manage_batches.php', 'add_agent.php', 'manage_agents.php']) ? 'active' : '' ?>"
                        data-bs-toggle="collapse" href="#coursesCollapse">
                         <i class="fas fa-book"></i> Courses
                         <i class="fas fa-angle-down float-end mt-1"></i>
                     </a>
-                    <div class="collapse <?= in_array($currentPage, ['add_course.php', 'manage_courses.php', 'add_batch.php', 'manage_batches.php']) ? 'show' : '' ?>" id="coursesCollapse">
+                    <div class="collapse <?= in_array($currentPage, ['add_course.php', 'manage_courses.php', 'add_batch.php', 'manage_batches.php', 'add_agent.php', 'manage_agents.php']) ? 'show' : '' ?>" id="coursesCollapse">
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item">
                                 <a class="nav-link <?= $currentPage === 'add_course.php' ? 'active' : '' ?>"
@@ -205,6 +205,18 @@ $isDarkMode = isset($_COOKIE['darkMode']) ? $_COOKIE['darkMode'] === 'true' : fa
                                 <a class="nav-link <?= $currentPage === 'manage_batches.php' ? 'active' : '' ?>"
                                    href="<?= BASE_URL ?>/admin/courses/batches/manage_batches.php">
                                     <i class="fas fa-list"></i> Manage Batches
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $currentPage === 'add_agent.php' ? 'active' : '' ?>"
+                                   href="<?= BASE_URL ?>/admin/agents/add-agent.php">
+                                    <i class="fas fa-user-plus"></i> Add Agent
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $currentPage === 'manage_agents.php' ? 'active' : '' ?>"
+                                   href="<?= BASE_URL ?>/admin/agents/manage_agents.php">
+                                    <i class="fas fa-users"></i> Manage Agents
                                 </a>
                             </li>
                         </ul>
