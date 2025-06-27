@@ -10,7 +10,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
     $searchTerm = '%' . $_POST['search'] . '%';
     $searchType = $_POST['type'] ?? 'name';
-    
+
     $query = "
         SELECT s.student_id, s.full_name, s.nic, s.status, c.course_name
         FROM students s
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
         LEFT JOIN batches b ON r.batch_id = b.batch_id
         LEFT JOIN courses c ON b.course_id = c.course_id
     ";
-    
+
     switch ($searchType) {
         case 'id':
             $query .= " WHERE s.student_id LIKE ?";
@@ -31,16 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
             $query .= " WHERE s.full_name LIKE ?";
             break;
     }
-    
-    $query .= " GROUP BY s.student_id LIMIT 20";
-    
+
+    // Include all selected columns in GROUP BY to satisfy ONLY_FULL_GROUP_BY
+    $query .= " GROUP BY s.student_id, s.full_name, s.nic, s.status, c.course_name LIMIT 20";
+
     $stmt = $conn->prepare($query);
     $stmt->bind_param('s', $searchTerm);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     $students = $result->fetch_all(MYSQLI_ASSOC);
-    
+
     echo json_encode($students);
     exit;
 }
