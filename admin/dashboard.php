@@ -131,6 +131,10 @@ $isMobile = isMobile();
                     <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
                         <i class="fas fa-print me-1"></i> Print
                     </button>
+                    <!-- Added Student Search Button -->
+                    <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#studentSearchModal">
+                        <i class="fas fa-search me-1"></i> Student Search
+                    </button>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
@@ -412,9 +416,67 @@ $isMobile = isMobile();
         </div>
     </div>
 
+    <!-- Student Search Modal -->
+    <div class="modal fade" id="studentSearchModal" tabindex="-1" aria-labelledby="studentSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="studentSearchModalLabel"><i class="fas fa-search me-2"></i>Student Search</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="studentSearchInput" placeholder="Search by name, ID or NIC...">
+                            <button class="btn btn-primary" type="button" id="studentSearchButton">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchType" id="searchByName" value="name" checked>
+                            <label class="form-check-label" for="searchByName">Name</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchType" id="searchByID" value="id">
+                            <label class="form-check-label" for="searchByID">Student ID</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchType" id="searchByNIC" value="nic">
+                            <label class="form-check-label" for="searchByNIC">NIC</label>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="studentSearchResults">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>NIC</th>
+                                    <th>Course</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Search results will be loaded here via AJAX -->
+                                <tr>
+                                    <td colspan="6" class="text-center">Enter search criteria to find students</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript Libraries -->
-                                
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -564,6 +626,69 @@ $isMobile = isMobile();
         
         var courseChart = new ApexCharts(document.querySelector("#courseChart"), courseOptions);
         courseChart.render();
+        
+        // Student Search Functionality
+        $('#studentSearchButton').click(function() {
+            const searchTerm = $('#studentSearchInput').val().trim();
+            const searchType = $('input[name="searchType"]:checked').val();
+            if (searchTerm.length < 2) {
+                alert('Please enter at least 2 characters to search');
+                return;
+            }
+            
+            $.ajax({
+                url: '../api/search_students.php',
+                method: 'POST',
+                data: { 
+                    search: searchTerm,
+                    type: searchType
+                },
+                dataType: 'json',
+                success: function(response) {
+                    const resultsTable = $('#studentSearchResults tbody');
+                    resultsTable.empty();
+                    
+                    if (response.length > 0) {
+                        response.forEach(function(student) {
+                            resultsTable.append(`
+                                <tr>
+                                    <td>${student.student_id}</td>
+                                    <td>${student.full_name}</td>
+                                    <td>${student.nic || 'N/A'}</td>
+                                    <td>${student.course_name || 'N/A'}</td>
+                                    <td><span class="badge ${student.status === 'Active' ? 'bg-success' : 'bg-secondary'}">${student.status}</span></td>
+                                    <td>
+                                        <a href="../student/dashboard.php?id=${student.student_id}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        resultsTable.append(`
+                            <tr>
+                                <td colspan="5" class="text-center">No students found matching your search</td>
+                            </tr>
+                        `);
+                    }
+                },
+                error: function() {
+                    $('#studentSearchResults tbody').html(`
+                        <tr>
+                            <td colspan="5" class="text-center text-danger">Error loading search results</td>
+                        </tr>
+                    `);
+                }
+            });
+        });
+        
+        // Allow search on Enter key press
+        $('#studentSearchInput').keypress(function(e) {
+            if (e.which === 13) {
+                $('#studentSearchButton').click();
+            }
+        });
     });
     </script>
     
